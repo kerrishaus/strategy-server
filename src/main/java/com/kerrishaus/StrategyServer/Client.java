@@ -6,6 +6,7 @@ public class Client
 {
     public WebSocket connection;
     public int id;
+    public String lobbyId = null;
 
     public Client(WebSocket connection, int id)
     {

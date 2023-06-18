@@ -10,6 +10,8 @@ public class Lobby
     WebSocketServer server;
 
     public String id;
+    public int currentTurnClientId;
+    public int currentState;
 
     public HashMap<Integer, Client> clients = new HashMap<>();
 
@@ -19,7 +21,16 @@ public class Lobby
         this.id     = id;
     }
 
-    public boolean addClient(Client client)
+    public void setState(int stateId)
+    {
+        final JSONObject command = new JSONObject();
+        command.put("command", "changeState");
+        command.put("stateId", stateId);
+
+        server.broadcast(command.toString());
+    }
+
+    public void addClient(Client client)
     {
         this.clients.put(client.id, client);
 
@@ -30,7 +41,20 @@ public class Lobby
         command.put("clientId", client.id);
 
         server.broadcast(command.toString());
+    }
 
-        return true;
+    public void removeClient(Client client)
+    {
+        this.clients.remove(client.id);
+
+        client.lobbyId = null;
+
+        System.out.println("Removed client " + client.id + " from lobby " + this.id + ".");
+
+        final JSONObject command = new JSONObject();
+        command.put("command", "clientLeft");
+        command.put("clientId", client.id);
+
+        server.broadcast(command.toString());
     }
 }

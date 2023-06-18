@@ -87,7 +87,9 @@ public class StrategyServer extends WebSocketServer
             }
             else
             {
-                lobbies.get(lobbyId).addClient(client);
+                final Lobby lobby = lobbies.get(lobbyId);
+                lobby.addClient(client);
+                client.lobbyId = lobby.id;
 
                 final JSONObject response = new JSONObject();
                 response.put("command", "joinedLobby");
@@ -113,12 +115,18 @@ public class StrategyServer extends WebSocketServer
 
             Lobby newLobby = new Lobby(this, lobbyId);
             newLobby.addClient(client);
+            client.lobbyId = newLobby.id;
             lobbies.put(lobbyId, newLobby);
 
             final JSONObject response = new JSONObject();
             response.put("command", "joinedLobby");
             response.put("lobbyId", lobbyId);
             conn.send(response.toString());
+        }
+        else if (command.getString("command").equals("changeState"))
+        {
+            // TODO: find lobby id by the sender of the message
+            final String stateId = command.getString("stateId");
         }
         else
         {
