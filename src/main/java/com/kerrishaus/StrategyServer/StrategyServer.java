@@ -99,7 +99,7 @@ public class StrategyServer extends WebSocketServer
                 final JSONObject response = new JSONObject();
                 response.put("command", "joinedLobby");
                 response.put("lobbyId", lobbyId);
-                response.put("owner", client.id);
+                response.put("ownerId", lobby.ownerId);
                 conn.send(response.toString());
             }
         }
@@ -127,7 +127,7 @@ public class StrategyServer extends WebSocketServer
             final JSONObject response = new JSONObject();
             response.put("command", "joinedLobby");
             response.put("lobbyId", lobbyId);
-            response.put("owner", client.id);
+            response.put("ownerId", client.id);
             conn.send(response.toString());
         }
         else if (command.getString("command").equals("startGame"))
