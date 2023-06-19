@@ -23,8 +23,6 @@ public class StrategyServer extends WebSocketServer
 
         StrategyServer server = new StrategyServer(new InetSocketAddress(host, port));
 
-        Runtime.getRuntime().addShutdownHook(new ShutdownThread(server));
-
         server.setConnectionLostTimeout(3);
         server.start();
     }
@@ -42,17 +40,24 @@ public class StrategyServer extends WebSocketServer
     @Override
     public void onStart()
     {
+        Runtime.getRuntime().addShutdownHook(new ShutdownThread(this));
+
         System.out.println("Server started on " + this.getPort() + " successfully.");
     }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake)
     {
-        this.clients.put(conn.getRemoteSocketAddress().toString(), new Client(conn, lifetimeClients++));
+        final Client newClient = new Client(conn, lifetimeClients++);
+
+        this.clients.put(conn.getRemoteSocketAddress().toString(), newClient);
 
         System.out.println("New connection established: " + conn.getRemoteSocketAddress());
 
-        conn.send("welcome");
+        final JSONObject response = new JSONObject();
+        response.put("command", "welcome");
+        response.put("clientId", newClient.id);
+        conn.send(response.toString());
     }
 
     @Override
@@ -94,6 +99,7 @@ public class StrategyServer extends WebSocketServer
                 final JSONObject response = new JSONObject();
                 response.put("command", "joinedLobby");
                 response.put("lobbyId", lobbyId);
+                response.put("owner", client.id);
                 conn.send(response.toString());
             }
         }
@@ -106,6 +112,7 @@ public class StrategyServer extends WebSocketServer
                 final JSONObject response = new JSONObject();
                 response.put("command", "invalidLobbyId");
                 response.put("lobbyId", lobbyId);
+                response.put("lobbyAlreadyExists", true);
                 conn.send(response.toString());
 
                 System.out.println("Client requested to create lobby with ID " + lobbyId + " which already exists.");
@@ -113,20 +120,23 @@ public class StrategyServer extends WebSocketServer
                 return;
             }
 
-            Lobby newLobby = new Lobby(this, lobbyId);
+            Lobby newLobby = new Lobby(this, lobbyId, client.id);
             newLobby.addClient(client);
-            client.lobbyId = newLobby.id;
             lobbies.put(lobbyId, newLobby);
 
             final JSONObject response = new JSONObject();
             response.put("command", "joinedLobby");
             response.put("lobbyId", lobbyId);
+            response.put("owner", client.id);
             conn.send(response.toString());
         }
-        else if (command.getString("command").equals("changeState"))
+        else if (command.getString("command").equals("startGame"))
         {
-            // TODO: find lobby id by the sender of the message
-            final String stateId = command.getString("stateId");
+            this.lobbies.get(client.lobbyId).startGame(client.id);
+        }
+        else if (command.getString("command").equals("nextStage"))
+        {
+            this.lobbies.get(client.lobbyId).nextStage(client.id);
         }
         else
         {
@@ -151,8 +161,15 @@ public class StrategyServer extends WebSocketServer
         System.err.println("ERROR: " + conn.getRemoteSocketAddress()  + ":" + ex);
     }
 
-    public void kickClient(Client client, String reason)
+    public void closeLobby(final String lobbyId)
     {
+        this.lobbies.remove(lobbyId);
+    }
+
+    public void kickClient(final Client client, final String reason)
+    {
+        // TODO: remove the client from a lobby if they are in one
+
         this.broadcast("clientLeft;" + client.id + ";" + reason);
 
         client.connection.close();

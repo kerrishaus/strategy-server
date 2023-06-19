@@ -4,8 +4,10 @@ import org.java_websocket.WebSocket;
 
 public class Client
 {
-    public WebSocket connection;
     public int id;
+
+    public WebSocket connection;
+
     public String lobbyId = null;
 
     public Client(WebSocket connection, int id)

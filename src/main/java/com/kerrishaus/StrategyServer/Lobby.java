@@ -1,60 +1,153 @@
 package com.kerrishaus.StrategyServer;
 
-import org.java_websocket.server.WebSocketServer;
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Lobby
 {
-    WebSocketServer server;
+    StrategyServer server;
 
     public String id;
-    public int currentTurnClientId;
-    public int currentState;
+    public int    ownerId;
 
-    public HashMap<Integer, Client> clients = new HashMap<>();
+    private int     turnCounter;
+    public int      currentTurnClientId;
+    public int      currentTurnStageId;
 
-    public Lobby(WebSocketServer server, String id)
+    public boolean started = false;
+    public boolean paused  = false;
+
+    public Map<Integer, Client> clients = new HashMap<>();
+
+    public ArrayList<Integer> clientTurnOrder = new ArrayList<>();
+
+    public Lobby(StrategyServer server, String id, int ownerId)
     {
-        this.server = server;
-        this.id     = id;
+        this.server  = server;
+        this.id      = id;
+        this.ownerId = ownerId;
     }
 
-    public void setState(int stateId)
+    public void broadcast(final String string)
     {
-        final JSONObject command = new JSONObject();
-        command.put("command", "changeState");
-        command.put("stateId", stateId);
+        this.clients.forEach((clientId, client) -> {
+            client.connection.send(string);
+        });
+    }
 
-        server.broadcast(command.toString());
+    public void startGame(final int fromClientId)
+    {
+        if (fromClientId != this.ownerId)
+        {
+            System.out.println(fromClientId + " requested to start the game, but they are not the owner. Ignoring.");
+            return;
+        }
+
+        if (this.clients.size() < 2)
+        {
+            System.out.println(fromClientId + " requested to start the game, but there are not enough players. Ignoring.");
+            return;
+        }
+
+        this.currentTurnClientId = this.clientTurnOrder.get(0);
+        this.currentTurnStageId  = 0;
+        this.turnCounter         = 0;
+
+        this.started = true;
+
+        final JSONObject command = new JSONObject();
+        command.put("command", "startGame");
+
+        this.broadcast(command.toString());
+
+        System.out.println("Started game in lobby " + this.id);
+    }
+
+    public void nextTurn()
+    {
+        System.out.println("Curren Turn:" + this.turnCounter + " Max Turns: " + this.clientTurnOrder.size());
+
+        if (this.turnCounter >= this.clientTurnOrder.size() - 1)
+        {
+            System.out.println("Resetting turn counter.");
+            this.turnCounter = 0;
+        }
+        else
+            this.turnCounter += 1;
+
+        this.currentTurnStageId  = 0;
+        this.currentTurnClientId = this.clientTurnOrder.get(this.turnCounter);
+
+        final JSONObject command = new JSONObject();
+        command.put("command", "nextTurn");
+        command.put("clientId", this.currentTurnClientId);
+
+        this.broadcast(command.toString());
+
+        System.out.println("Started turn for " + this.currentTurnClientId + " (#" + this.turnCounter + " in queue)");
+    }
+
+    public void nextStage(final int clientId)
+    {
+        if (clientId != this.currentTurnClientId)
+        {
+            System.out.println(clientId + " requested next stage, but it is not their turn. Current turn is client " + this.currentTurnClientId);
+            return;
+        }
+
+        if (this.currentTurnStageId == 2)
+        {
+            System.out.println("No more stages for " + this.currentTurnClientId + "'s turn, next turn.");
+            nextTurn();
+            return;
+        }
+
+        this.currentTurnStageId++;
+
+        final JSONObject command = new JSONObject();
+        command.put("command", "setStage");
+        command.put("stageId", this.currentTurnStageId);
+
+        this.broadcast(command.toString());
+
+        System.out.println("Starting next stage " + this.currentTurnStageId + " for client " + this.currentTurnClientId);
     }
 
     public void addClient(Client client)
     {
         this.clients.put(client.id, client);
+        client.lobbyId = this.id;
+
+        this.clientTurnOrder.add(client.id);
 
         System.out.println("Added client " + client.id + " to lobby " + this.id + ".");
 
         final JSONObject command = new JSONObject();
-        command.put("command", "newClient");
+        command.put("command", "clientJoin");
         command.put("clientId", client.id);
 
-        server.broadcast(command.toString());
+        this.broadcast(command.toString());
     }
 
     public void removeClient(Client client)
     {
         this.clients.remove(client.id);
-
         client.lobbyId = null;
 
         System.out.println("Removed client " + client.id + " from lobby " + this.id + ".");
 
         final JSONObject command = new JSONObject();
-        command.put("command", "clientLeft");
+        command.put("command", "clientLeave");
         command.put("clientId", client.id);
 
-        server.broadcast(command.toString());
+        this.broadcast(command.toString());
+
+        if (this.clients.size() <= 0)
+        {
+            System.out.println("Closing lobby " + this.id + " because it is empty.");
+            this.server.closeLobby(this.id);
+        }
     }
 }

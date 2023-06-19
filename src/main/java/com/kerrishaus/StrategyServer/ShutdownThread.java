@@ -18,6 +18,8 @@ public class ShutdownThread extends Thread
         try
         {
             this.server.stop();
+
+            System.out.println("Server closed.");
         }
         catch (InterruptedException e)
         {

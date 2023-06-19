@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="initial commit">
+    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="more commands and lobby improvement">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/ShutdownThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/ShutdownThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +24,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -39,6 +45,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ToolWindowRun.ShowToolbar": "false",
     "last_opened_file_path": "/Users/kennymccormick/IdeaProjects/StrategyServer/src/main/java",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
@@ -66,7 +73,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687042084785</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="more commands and lobby improvement">
+      <created>1687049209989</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1687049209989</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -82,6 +96,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="more commands and lobby improvement" />
+    <option name="LAST_COMMIT_MESSAGE" value="more commands and lobby improvement" />
   </component>
 </project>
