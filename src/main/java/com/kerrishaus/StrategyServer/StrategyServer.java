@@ -27,7 +27,9 @@ public class StrategyServer extends WebSocketServer
         server.start();
     }
 
-    int lifetimeClients = 0;
+    // start assigning client ids starting at one because
+    // in local games, the player is always client 0
+    int lifetimeClients = 1;
 
     public HashMap<String, Client> clients = new HashMap<>();
     public HashMap<String, Lobby> lobbies = new HashMap<>();
@@ -73,11 +75,16 @@ public class StrategyServer extends WebSocketServer
     {
         System.out.println(conn.getRemoteSocketAddress() + " > " + message);
 
-        final Client client = clients.get(conn.getRemoteSocketAddress().toString());
+        final String clientAddress = conn.getRemoteSocketAddress().toString();
 
-        JSONObject command = new JSONObject(message);
+        // TODO: check to make sure the client is in the list?
+        final Client client = clients.get(clientAddress);
 
-        if (command.getString("command").equals("joinLobby"))
+        final JSONObject command = new JSONObject(message);
+
+        final String commandString = command.getString("command");
+
+        if (commandString.equals("joinLobby"))
         {
             final String lobbyId = command.getString("lobbyId");
 
@@ -103,7 +110,7 @@ public class StrategyServer extends WebSocketServer
                 conn.send(response.toString());
             }
         }
-        else if (command.getString("command").equals("createLobby"))
+        else if (commandString.equals("createLobby"))
         {
             final String lobbyId = command.getString("lobbyId");
 
@@ -130,14 +137,18 @@ public class StrategyServer extends WebSocketServer
             response.put("ownerId", client.id);
             conn.send(response.toString());
         }
-        else if (command.getString("command").equals("startGame"))
-        {
+        else if (commandString.equals("startGame"))
             this.lobbies.get(client.lobbyId).startGame(client.id);
-        }
-        else if (command.getString("command").equals("nextStage"))
-        {
+        else if (commandString.equals("nextStage"))
             this.lobbies.get(client.lobbyId).nextStage(client.id);
-        }
+        else if (commandString.equals("selectTerritory"))
+            // TODO: make sure territoryId is valid
+            this.lobbies.get(client.lobbyId).selectTerritory(client.id, command.getInt("territoryId"));
+        else if (commandString.equals("deselectTerritory"))
+            // TODO: make sure territoryId is valid
+            this.lobbies.get(client.lobbyId).deselectTerritory(client.id, command.getInt("territoryId"));
+        else if (commandString.equals("attack"))
+            this.lobbies.get(client.lobbyId).attack(client.id, command.getInt("fromTerritoryId"), command.getInt("toTerritoryId"));
         else
         {
             System.out.println("Unknown command.");

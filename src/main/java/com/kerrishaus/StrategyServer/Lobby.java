@@ -67,7 +67,7 @@ public class Lobby
 
     public void nextTurn()
     {
-        System.out.println("Curren Turn:" + this.turnCounter + " Max Turns: " + this.clientTurnOrder.size());
+        System.out.println("Current Turn:" + this.turnCounter + " Max Turns: " + this.clientTurnOrder.size());
 
         if (this.turnCounter >= this.clientTurnOrder.size() - 1)
         {
@@ -81,7 +81,7 @@ public class Lobby
         this.currentTurnClientId = this.clientTurnOrder.get(this.turnCounter);
 
         final JSONObject command = new JSONObject();
-        command.put("command", "nextTurn");
+        command.put("command" , "nextTurn");
         command.put("clientId", this.currentTurnClientId);
 
         this.broadcast(command.toString());
@@ -113,6 +113,49 @@ public class Lobby
         this.broadcast(command.toString());
 
         System.out.println("Starting next stage " + this.currentTurnStageId + " for client " + this.currentTurnClientId);
+    }
+
+    public void selectTerritory(final int clientId, final int territoryId)
+    {
+        if (clientId != currentTurnClientId)
+        {
+            System.out.println(clientId + " tried to select territory " + territoryId + " but it was not their turn, ignoring.");
+            return;
+        }
+
+        final JSONObject command = new JSONObject();
+        command.put("command"    , "selectTerritory");
+        command.put("territoryId", territoryId);
+        this.broadcast(command.toString());
+    }
+
+    public void deselectTerritory(final int clientId, final int territoryId)
+    {
+        if (clientId != currentTurnClientId)
+        {
+            System.out.println(clientId + " tried to deselect territory " + territoryId + " but it was not their turn, ignoring.");
+            return;
+        }
+
+        final JSONObject command = new JSONObject();
+        command.put("command"    , "deselectTerritory");
+        command.put("territoryId", territoryId);
+        this.broadcast(command.toString());
+    }
+
+    public void attack(final int clientId, final int fromTerritoryId, final int toTerritoryId)
+    {
+        if (clientId != currentTurnClientId)
+        {
+            System.out.println(clientId + " tried to attack territory " + toTerritoryId + " from " + fromTerritoryId + " but it was not their turn, ignoring.");
+            return;
+        }
+
+        final JSONObject command = new JSONObject();
+        command.put("command", "deselectTerritory");
+        command.put("attack" , toTerritoryId);
+        command.put("from"   , fromTerritoryId);
+        this.broadcast(command.toString());
     }
 
     public void addClient(Client client)
