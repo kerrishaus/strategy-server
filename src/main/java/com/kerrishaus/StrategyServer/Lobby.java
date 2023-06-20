@@ -59,6 +59,8 @@ public class Lobby
 
         final JSONObject command = new JSONObject();
         command.put("command", "startGame");
+        command.put("width", "10");
+        command.put("height", "10");
 
         this.broadcast(command.toString());
 

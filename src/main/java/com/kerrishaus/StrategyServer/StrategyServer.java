@@ -29,6 +29,7 @@ public class StrategyServer extends WebSocketServer
 
     // start assigning client ids starting at one because
     // in local games, the player is always client 0
+    // these ids are recycled when the server is empty
     int lifetimeClients = 1;
 
     public HashMap<String, Client> clients = new HashMap<>();
@@ -73,6 +74,11 @@ public class StrategyServer extends WebSocketServer
             this.lobbies.get(client.lobbyId).removeClient(client);
 
         clients.remove(conn.getRemoteSocketAddress().toString());
+
+        // recycle client ids
+        if (this.clients.size() <= 0)
+            // starts at 1 because local clients are always 0
+            this.lifetimeClients = 1;
 
         System.out.println("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
     }
