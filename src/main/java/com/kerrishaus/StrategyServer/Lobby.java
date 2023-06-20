@@ -179,7 +179,7 @@ public class Lobby
         this.clients.remove(client.id);
         client.lobbyId = null;
 
-        System.out.println("Removed client " + client.id + " from lobby " + this.id + ".");
+        System.out.println("Removed client " + client.id + " from lobby " + this.id + ". There are now " + this.clients.size() + " clients in this lobby.");
 
         final JSONObject command = new JSONObject();
         command.put("command", "clientLeave");

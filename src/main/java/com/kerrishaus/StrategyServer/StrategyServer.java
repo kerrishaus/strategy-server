@@ -65,6 +65,13 @@ public class StrategyServer extends WebSocketServer
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote)
     {
+        final String clientAddress = conn.getRemoteSocketAddress().toString();
+
+        final Client client = clients.get(clientAddress);
+
+        if (this.lobbies.containsKey(client.lobbyId))
+            this.lobbies.get(client.lobbyId).removeClient(client);
+
         clients.remove(conn.getRemoteSocketAddress().toString());
 
         System.out.println("closed " + conn.getRemoteSocketAddress() + " with exit code " + code + " additional info: " + reason);
