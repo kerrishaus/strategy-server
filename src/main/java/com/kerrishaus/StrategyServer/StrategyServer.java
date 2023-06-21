@@ -152,6 +152,8 @@ public class StrategyServer extends WebSocketServer
         }
         else if (commandString.equals("startGame"))
             this.lobbies.get(client.lobbyId).startGame(client.id);
+        else if (commandString.equals("worldData"))
+            this.lobbies.get(client.lobbyId).worldData(client.id, command);
         else if (commandString.equals("nextStage"))
             this.lobbies.get(client.lobbyId).nextStage(client.id);
         else if (commandString.equals("selectTerritory"))

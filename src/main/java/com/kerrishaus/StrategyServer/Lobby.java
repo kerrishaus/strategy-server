@@ -67,6 +67,14 @@ public class Lobby
         System.out.println("Started game in lobby " + this.id);
     }
 
+    public void worldData(final int clientId, final JSONObject data)
+    {
+        if (clientId != this.ownerId)
+            System.out.println("Received world data from " + clientId + " but they are not the host, ignoring.");
+
+        this.broadcast(data.toString());
+    }
+
     public void nextTurn()
     {
         System.out.println("Current Turn:" + this.turnCounter + " Max Turns: " + this.clientTurnOrder.size());

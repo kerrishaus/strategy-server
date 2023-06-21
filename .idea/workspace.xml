@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="recognise commands for selecting, deselecting, and attacking territory&#10;&#10;also have lifetimeClients start at 1 instead of 0, since clientId in local lobbies will be 0">
+    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="recycle client ids when the server is empty">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" afterDir="false" />
@@ -99,7 +99,28 @@
       <option name="project" value="LOCAL" />
       <updated>1687221326212</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix players not getting removed from lobbies when they disconnect">
+      <created>1687224144839</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1687224144839</updated>
+    </task>
+    <task id="LOCAL-00007" summary="ignore workspace.xml">
+      <created>1687224588672</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1687224588672</updated>
+    </task>
+    <task id="LOCAL-00008" summary="recycle client ids when the server is empty">
+      <created>1687226740654</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1687226740654</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -119,6 +140,9 @@
     <MESSAGE value="lobby game management" />
     <MESSAGE value="fix wrong ownerId being sent to clients when joining a lobby" />
     <MESSAGE value="recognise commands for selecting, deselecting, and attacking territory&#10;&#10;also have lifetimeClients start at 1 instead of 0, since clientId in local lobbies will be 0" />
-    <option name="LAST_COMMIT_MESSAGE" value="recognise commands for selecting, deselecting, and attacking territory&#10;&#10;also have lifetimeClients start at 1 instead of 0, since clientId in local lobbies will be 0" />
+    <MESSAGE value="fix players not getting removed from lobbies when they disconnect" />
+    <MESSAGE value="ignore workspace.xml" />
+    <MESSAGE value="recycle client ids when the server is empty" />
+    <option name="LAST_COMMIT_MESSAGE" value="recycle client ids when the server is empty" />
   </component>
 </project>
