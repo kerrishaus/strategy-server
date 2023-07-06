@@ -59,8 +59,8 @@ public class Lobby
 
         final JSONObject command = new JSONObject();
         command.put("command", "startGame");
-        command.put("width", "10");
-        command.put("height", "10");
+        command.put("width",  10);
+        command.put("height", 10);
 
         this.broadcast(command.toString());
 
@@ -153,18 +153,44 @@ public class Lobby
         this.broadcast(command.toString());
     }
 
-    public void attack(final int clientId, final int fromTerritoryId, final int toTerritoryId)
+    public void dropUnits(final int clientId, final int territoryId, final int amount)
     {
         if (clientId != currentTurnClientId)
         {
-            System.out.println(clientId + " tried to attack territory " + toTerritoryId + " from " + fromTerritoryId + " but it was not their turn, ignoring.");
+            System.out.println(clientId + " tried to drop units on territory " + territoryId + " but they do not own it, ignoring.");
             return;
         }
 
         final JSONObject command = new JSONObject();
-        command.put("command", "deselectTerritory");
-        command.put("attack" , toTerritoryId);
-        command.put("from"   , fromTerritoryId);
+        command.put("command"     , "dropUnits");
+        command.put("clientId"    , clientId);
+        command.put("territoryId" , territoryId);
+        command.put("amount"      , amount);
+        this.broadcast(command.toString());
+    }
+
+    public void attack(final int clientId, final JSONObject originalCommand)
+    {
+        final int attackingTerritoryId = originalCommand.getInt("attacker");
+        final int defendingTerritoryId = originalCommand.getInt("defender");
+
+        if (clientId != currentTurnClientId)
+        {
+            System.out.println(clientId + " tried to attack territory " + attackingTerritoryId + " from " + defendingTerritoryId + " but it was not their turn, ignoring.");
+            return;
+        }
+
+        final JSONObject command = new JSONObject();
+        command.put("command", "attackResult");
+        command.put("clientId", clientId);
+        command.put("result", originalCommand.getString("result"));
+        command.put("attacker", attackingTerritoryId);
+        command.put("defender", defendingTerritoryId);
+        command.put("attackerPopulation", originalCommand.getInt("attackerPopulation"));
+        command.put("defenderPopulation", originalCommand.getInt("defenderPopulation"));
+
+        System.out.println("Attack Result from " + clientId + ": " + command.toString());
+
         this.broadcast(command.toString());
     }
 

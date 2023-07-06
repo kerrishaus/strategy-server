@@ -148,6 +148,7 @@ public class StrategyServer extends WebSocketServer
             response.put("command", "joinedLobby");
             response.put("lobbyId", lobbyId);
             response.put("ownerId", client.id);
+            response.put("clients", newLobby.clients);
             conn.send(response.toString());
         }
         else if (commandString.equals("startGame"))
@@ -162,8 +163,10 @@ public class StrategyServer extends WebSocketServer
         else if (commandString.equals("deselectTerritory"))
             // TODO: make sure territoryId is valid
             this.lobbies.get(client.lobbyId).deselectTerritory(client.id, command.getInt("territoryId"));
+        else if (commandString.equals("dropUnits"))
+            this.lobbies.get(client.lobbyId).dropUnits(client.id, command.getInt("territoryId"), command.getInt("amount"));
         else if (commandString.equals("attack"))
-            this.lobbies.get(client.lobbyId).attack(client.id, command.getInt("fromTerritoryId"), command.getInt("toTerritoryId"));
+            this.lobbies.get(client.lobbyId).attack(client.id, command);
         else
         {
             System.out.println("Unknown command.");
