@@ -75,56 +75,6 @@ public class Lobby
         this.broadcast(data.toString());
     }
 
-    public void nextTurn()
-    {
-        System.out.println("Current Turn:" + this.turnCounter + " Max Turns: " + this.clientTurnOrder.size());
-
-        if (this.turnCounter >= this.clientTurnOrder.size() - 1)
-        {
-            System.out.println("Resetting turn counter.");
-            this.turnCounter = 0;
-        }
-        else
-            this.turnCounter += 1;
-
-        this.currentTurnStageId  = 0;
-        this.currentTurnClientId = this.clientTurnOrder.get(this.turnCounter);
-
-        final JSONObject command = new JSONObject();
-        command.put("command" , "nextTurn");
-        command.put("clientId", this.currentTurnClientId);
-
-        this.broadcast(command.toString());
-
-        System.out.println("Started turn for " + this.currentTurnClientId + " (#" + this.turnCounter + " in queue)");
-    }
-
-    public void nextStage(final int clientId)
-    {
-        if (clientId != this.currentTurnClientId)
-        {
-            System.out.println(clientId + " requested next stage, but it is not their turn. Current turn is client " + this.currentTurnClientId);
-            return;
-        }
-
-        if (this.currentTurnStageId == 2)
-        {
-            System.out.println("No more stages for " + this.currentTurnClientId + "'s turn, next turn.");
-            nextTurn();
-            return;
-        }
-
-        this.currentTurnStageId++;
-
-        final JSONObject command = new JSONObject();
-        command.put("command", "setStage");
-        command.put("stageId", this.currentTurnStageId);
-
-        this.broadcast(command.toString());
-
-        System.out.println("Starting next stage " + this.currentTurnStageId + " for client " + this.currentTurnClientId);
-    }
-
     public void selectTerritory(final int clientId, final int territoryId)
     {
         if (clientId != currentTurnClientId)

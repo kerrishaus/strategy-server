@@ -120,6 +120,7 @@ public class StrategyServer extends WebSocketServer
                 response.put("command", "joinedLobby");
                 response.put("lobbyId", lobbyId);
                 response.put("ownerId", lobby.ownerId);
+                response.put("clients", lobby.clientTurnOrder);
                 conn.send(response.toString());
             }
         }
@@ -148,7 +149,7 @@ public class StrategyServer extends WebSocketServer
             response.put("command", "joinedLobby");
             response.put("lobbyId", lobbyId);
             response.put("ownerId", client.id);
-            response.put("clients", newLobby.clients);
+            response.put("clients", newLobby.clientTurnOrder);
             conn.send(response.toString());
         }
         else if (commandString.equals("startGame"))
@@ -156,7 +157,7 @@ public class StrategyServer extends WebSocketServer
         else if (commandString.equals("worldData"))
             this.lobbies.get(client.lobbyId).worldData(client.id, command);
         else if (commandString.equals("nextStage"))
-            this.lobbies.get(client.lobbyId).nextStage(client.id);
+            this.lobbies.get(client.lobbyId).broadcast(command.toString());
         else if (commandString.equals("selectTerritory"))
             // TODO: make sure territoryId is valid
             this.lobbies.get(client.lobbyId).selectTerritory(client.id, command.getInt("territoryId"));
