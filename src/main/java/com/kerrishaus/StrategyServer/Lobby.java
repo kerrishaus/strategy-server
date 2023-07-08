@@ -11,8 +11,6 @@ public class Lobby
     public String id;
     public int    ownerId;
 
-    public boolean started = false;
-
     public Map<Integer, Client> clients = new HashMap<>();
 
     public ArrayList<Integer> clientTurnOrder = new ArrayList<>();
@@ -31,7 +29,7 @@ public class Lobby
         });
     }
 
-    public void startGame(final int fromClientId)
+    public void startGame(final int fromClientId, final JSONObject command)
     {
         if (fromClientId != this.ownerId)
         {
@@ -45,17 +43,6 @@ public class Lobby
             return;
         }
 
-        //this.currentTurnClientId = this.clientTurnOrder.get(0);
-        //this.currentTurnStageId  = 0;
-        //this.turnCounter         = 0;
-
-        this.started = true;
-
-        final JSONObject command = new JSONObject();
-        command.put("command", "startGame");
-        command.put("width",  10);
-        command.put("height", 5);
-
         this.broadcast(command.toString());
 
         System.out.println("Started game in lobby " + this.id);
@@ -64,7 +51,10 @@ public class Lobby
     public void worldData(final int clientId, final JSONObject data)
     {
         if (clientId != this.ownerId)
+        {
             System.out.println("Received world data from " + clientId + " but they are not the host, ignoring.");
+            return;
+        }
 
         this.broadcast(data.toString());
     }

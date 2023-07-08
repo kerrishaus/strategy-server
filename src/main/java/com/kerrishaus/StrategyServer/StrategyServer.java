@@ -97,6 +97,8 @@ public class StrategyServer extends WebSocketServer
 
         final String commandString = command.getString("command");
 
+        command.put("clientId", client.id);
+
         if (commandString.equals("joinLobby"))
         {
             final String lobbyId = command.getString("lobbyId");
@@ -153,34 +155,11 @@ public class StrategyServer extends WebSocketServer
             conn.send(response.toString());
         }
         else if (commandString.equals("startGame"))
-            this.lobbies.get(client.lobbyId).startGame(client.id);
+            this.lobbies.get(client.lobbyId).startGame(client.id, command);
         else if (commandString.equals("worldData"))
             this.lobbies.get(client.lobbyId).worldData(client.id, command);
-        /*
-        else if (commandString.equals("nextStage"))
-            this.lobbies.get(client.lobbyId).broadcast(command.toString());
-        else if (commandString.equals("selectTerritory"))
-            // TODO: make sure territoryId is valid
-            this.lobbies.get(client.lobbyId).selectTerritory(client.id, command.getInt("territoryId"));
-        else if (commandString.equals("deselectTerritory"))
-            // TODO: make sure territoryId is valid
-            this.lobbies.get(client.lobbyId).deselectTerritory(client.id, command.getInt("territoryId"));
-        else if (commandString.equals("dropUnits"))
-            this.lobbies.get(client.lobbyId).dropUnits(client.id, command.getInt("territoryId"), command.getInt("amount"));
-        else if (commandString.equals("attack"))
-            this.lobbies.get(client.lobbyId).attack(client.id, command);
-        */
         else
         {
-            /*
-            System.out.println("Unknown command.");
-
-            final JSONObject response = new JSONObject();
-            response.put("command", "unknownCommand");
-            response.put("originalCommand", command.get("command"));
-            conn.send(response.toString());
-            */
-
             // rebroadcast the command and don't do anything special
             this.broadcast(command.toString());
         }
