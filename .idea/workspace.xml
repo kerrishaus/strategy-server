@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="let the client take care of turns and stages and what not">
+    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="temporarily stop doing checks to make sure the right player is sending commands.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +140,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688778802100</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="temporarily stop doing checks to make sure the right player is sending commands.">
+      <created>1688779514974</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1688779514974</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -166,6 +173,7 @@
     <MESSAGE value="rebroadcast network data across clients" />
     <MESSAGE value="drop units and attacking is replicated" />
     <MESSAGE value="let the client take care of turns and stages and what not" />
-    <option name="LAST_COMMIT_MESSAGE" value="let the client take care of turns and stages and what not" />
+    <MESSAGE value="temporarily stop doing checks to make sure the right player is sending commands." />
+    <option name="LAST_COMMIT_MESSAGE" value="temporarily stop doing checks to make sure the right player is sending commands." />
   </component>
 </project>
