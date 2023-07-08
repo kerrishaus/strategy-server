@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="drop units and attacking is replicated">
+    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="let the client take care of turns and stages and what not">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688610819746</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="let the client take care of turns and stages and what not">
+      <created>1688778802100</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1688778802100</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -159,6 +165,7 @@
     <MESSAGE value="recycle client ids when the server is empty" />
     <MESSAGE value="rebroadcast network data across clients" />
     <MESSAGE value="drop units and attacking is replicated" />
-    <option name="LAST_COMMIT_MESSAGE" value="drop units and attacking is replicated" />
+    <MESSAGE value="let the client take care of turns and stages and what not" />
+    <option name="LAST_COMMIT_MESSAGE" value="let the client take care of turns and stages and what not" />
   </component>
 </project>

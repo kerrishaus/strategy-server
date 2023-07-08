@@ -12,9 +12,9 @@ public class Lobby
     public String id;
     public int    ownerId;
 
-    private int     turnCounter;
-    public int      currentTurnClientId;
-    public int      currentTurnStageId;
+    //private int     turnCounter;
+    //public int      currentTurnClientId;
+    //public int      currentTurnStageId;
 
     public boolean started = false;
     public boolean paused  = false;
@@ -51,9 +51,9 @@ public class Lobby
             return;
         }
 
-        this.currentTurnClientId = this.clientTurnOrder.get(0);
-        this.currentTurnStageId  = 0;
-        this.turnCounter         = 0;
+        //this.currentTurnClientId = this.clientTurnOrder.get(0);
+        //this.currentTurnStageId  = 0;
+        //this.turnCounter         = 0;
 
         this.started = true;
 
@@ -77,11 +77,13 @@ public class Lobby
 
     public void selectTerritory(final int clientId, final int territoryId)
     {
+        /*
         if (clientId != currentTurnClientId)
         {
             System.out.println(clientId + " tried to select territory " + territoryId + " but it was not their turn, ignoring.");
             return;
         }
+        */
 
         final JSONObject command = new JSONObject();
         command.put("command"    , "selectTerritory");
@@ -91,11 +93,13 @@ public class Lobby
 
     public void deselectTerritory(final int clientId, final int territoryId)
     {
+        /*
         if (clientId != currentTurnClientId)
         {
             System.out.println(clientId + " tried to deselect territory " + territoryId + " but it was not their turn, ignoring.");
             return;
         }
+        */
 
         final JSONObject command = new JSONObject();
         command.put("command"    , "deselectTerritory");
@@ -105,11 +109,13 @@ public class Lobby
 
     public void dropUnits(final int clientId, final int territoryId, final int amount)
     {
+        /*
         if (clientId != currentTurnClientId)
         {
             System.out.println(clientId + " tried to drop units on territory " + territoryId + " but they do not own it, ignoring.");
             return;
         }
+        */
 
         final JSONObject command = new JSONObject();
         command.put("command"     , "dropUnits");
@@ -124,11 +130,13 @@ public class Lobby
         final int attackingTerritoryId = originalCommand.getInt("attacker");
         final int defendingTerritoryId = originalCommand.getInt("defender");
 
+        /*
         if (clientId != currentTurnClientId)
         {
             System.out.println(clientId + " tried to attack territory " + attackingTerritoryId + " from " + defendingTerritoryId + " but it was not their turn, ignoring.");
             return;
         }
+        */
 
         final JSONObject command = new JSONObject();
         command.put("command", "attackResult");
