@@ -2,7 +2,6 @@ package com.kerrishaus.StrategyServer;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Lobby
@@ -12,12 +11,7 @@ public class Lobby
     public String id;
     public int    ownerId;
 
-    //private int     turnCounter;
-    //public int      currentTurnClientId;
-    //public int      currentTurnStageId;
-
     public boolean started = false;
-    public boolean paused  = false;
 
     public Map<Integer, Client> clients = new HashMap<>();
 
@@ -60,7 +54,7 @@ public class Lobby
         final JSONObject command = new JSONObject();
         command.put("command", "startGame");
         command.put("width",  10);
-        command.put("height", 10);
+        command.put("height", 5);
 
         this.broadcast(command.toString());
 
@@ -73,83 +67,6 @@ public class Lobby
             System.out.println("Received world data from " + clientId + " but they are not the host, ignoring.");
 
         this.broadcast(data.toString());
-    }
-
-    public void selectTerritory(final int clientId, final int territoryId)
-    {
-        /*
-        if (clientId != currentTurnClientId)
-        {
-            System.out.println(clientId + " tried to select territory " + territoryId + " but it was not their turn, ignoring.");
-            return;
-        }
-        */
-
-        final JSONObject command = new JSONObject();
-        command.put("command"    , "selectTerritory");
-        command.put("territoryId", territoryId);
-        this.broadcast(command.toString());
-    }
-
-    public void deselectTerritory(final int clientId, final int territoryId)
-    {
-        /*
-        if (clientId != currentTurnClientId)
-        {
-            System.out.println(clientId + " tried to deselect territory " + territoryId + " but it was not their turn, ignoring.");
-            return;
-        }
-        */
-
-        final JSONObject command = new JSONObject();
-        command.put("command"    , "deselectTerritory");
-        command.put("territoryId", territoryId);
-        this.broadcast(command.toString());
-    }
-
-    public void dropUnits(final int clientId, final int territoryId, final int amount)
-    {
-        /*
-        if (clientId != currentTurnClientId)
-        {
-            System.out.println(clientId + " tried to drop units on territory " + territoryId + " but they do not own it, ignoring.");
-            return;
-        }
-        */
-
-        final JSONObject command = new JSONObject();
-        command.put("command"     , "dropUnits");
-        command.put("clientId"    , clientId);
-        command.put("territoryId" , territoryId);
-        command.put("amount"      , amount);
-        this.broadcast(command.toString());
-    }
-
-    public void attack(final int clientId, final JSONObject originalCommand)
-    {
-        final int attackingTerritoryId = originalCommand.getInt("attacker");
-        final int defendingTerritoryId = originalCommand.getInt("defender");
-
-        /*
-        if (clientId != currentTurnClientId)
-        {
-            System.out.println(clientId + " tried to attack territory " + attackingTerritoryId + " from " + defendingTerritoryId + " but it was not their turn, ignoring.");
-            return;
-        }
-        */
-
-        final JSONObject command = new JSONObject();
-        command.put("command", "attackResult");
-        command.put("clientId", clientId);
-        command.put("result", originalCommand.getString("result"));
-        command.put("attacker", attackingTerritoryId);
-        command.put("defender", defendingTerritoryId);
-        command.put("attackerPopulation", originalCommand.getInt("attackerPopulation"));
-        command.put("defenderPopulation", originalCommand.getInt("defenderPopulation"));
-
-        System.out.println("Attack Result from " + clientId + ": " + command.toString());
-
-        this.broadcast(command.toString());
     }
 
     public void addClient(Client client)

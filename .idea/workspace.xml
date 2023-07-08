@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="temporarily stop doing checks to make sure the right player is sending commands.">
+    <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="let the client make most of the decisions, we just act as a relay.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688779514974</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="let the client make most of the decisions, we just act as a relay.">
+      <created>1688835999803</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1688835999803</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -155,7 +162,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -174,6 +193,7 @@
     <MESSAGE value="drop units and attacking is replicated" />
     <MESSAGE value="let the client take care of turns and stages and what not" />
     <MESSAGE value="temporarily stop doing checks to make sure the right player is sending commands." />
-    <option name="LAST_COMMIT_MESSAGE" value="temporarily stop doing checks to make sure the right player is sending commands." />
+    <MESSAGE value="let the client make most of the decisions, we just act as a relay." />
+    <option name="LAST_COMMIT_MESSAGE" value="let the client make most of the decisions, we just act as a relay." />
   </component>
 </project>
