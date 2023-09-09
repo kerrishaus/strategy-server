@@ -10,16 +10,18 @@ public class Lobby
 
     public String id;
     public int    ownerId;
+    public Client owner;
 
     public Map<Integer, Client> clients = new HashMap<>();
 
     public ArrayList<Integer> clientTurnOrder = new ArrayList<>();
 
-    public Lobby(StrategyServer server, String id, int ownerId)
+    public Lobby(StrategyServer server, String id, Client owner)
     {
         this.server  = server;
         this.id      = id;
-        this.ownerId = ownerId;
+        this.owner   = owner;
+        this.ownerId = owner.id;
     }
 
     public void broadcast(final String string)
@@ -77,6 +79,8 @@ public class Lobby
 
     public void removeClient(Client client)
     {
+        // TODO: make sure to modify clients
+
         this.clients.remove(client.id);
         client.lobbyId = null;
 

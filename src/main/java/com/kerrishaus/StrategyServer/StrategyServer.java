@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 public class StrategyServer extends WebSocketServer
 {
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
         String host = "localhost";
         int port = 27002;
@@ -27,8 +27,6 @@ public class StrategyServer extends WebSocketServer
         server.start();
     }
 
-    // start assigning client ids starting at one because
-    // in local games, the player is always client 0
     // these ids are recycled when the server is empty
     int lifetimeClients = 1;
 
@@ -86,20 +84,23 @@ public class StrategyServer extends WebSocketServer
     @Override
     public void onMessage(WebSocket conn, String message)
     {
-        System.out.println(conn.getRemoteSocketAddress() + " > " + message);
-
         final String clientAddress = conn.getRemoteSocketAddress().toString();
 
         // TODO: check to make sure the client is in the list?
         final Client client = clients.get(clientAddress);
 
+        System.out.println(conn.getRemoteSocketAddress() + " (client " + client.id + ") > " + message);
+
         final JSONObject command = new JSONObject(message);
 
         final String commandString = command.getString("command");
 
+        // always overwrite whatever the client says their id is
+        // and put what the server thinks their id is
+        // in an effort to prevent fake commands
         command.put("clientId", client.id);
 
-        if (commandString.equals("joinLobby"))
+        if (commandString.equals("joinLobbyRequest"))
         {
             final String lobbyId = command.getString("lobbyId");
 
@@ -115,16 +116,72 @@ public class StrategyServer extends WebSocketServer
             else
             {
                 final Lobby lobby = lobbies.get(lobbyId);
-                lobby.addClient(client);
-                client.lobbyId = lobby.id;
 
                 final JSONObject response = new JSONObject();
-                response.put("command", "joinedLobby");
-                response.put("lobbyId", lobbyId);
-                response.put("ownerId", lobby.ownerId);
-                response.put("clients", lobby.clientTurnOrder);
-                conn.send(response.toString());
+                response.put("command", "joinLobbyRequest");
+                response.put("requesterId", client.id);
+                clients.get(lobby.owner.connection.getRemoteSocketAddress().toString()).connection.send(response.toString());
             }
+        }
+        else if (commandString.equals("joinLobbyAccept"))
+        {
+            final Lobby lobby = lobbies.get(client.lobbyId);
+
+            if (client.id != lobby.ownerId)
+            {
+                System.out.println("ERROR: Client " + client.id + " sent a joinLobby accept/deny packet, but " + lobby.ownerId + " is the owner!");
+                return;
+            }
+
+            final int requesterId = command.getInt("requesterId");
+
+            // TODO: improve this, there should be a method to get client by their id
+            this.clients.forEach((address, requester) ->
+            {
+                if (requester.id == requesterId)
+                {
+                    lobby.addClient(requester);
+                    requester.lobbyId = lobby.id;
+
+                    final JSONObject response = new JSONObject();
+                    response.put("command", "joinLobbyAccept");
+                    response.put("lobbyId", lobby.id);
+                    response.put("ownerId", lobby.ownerId);
+                    response.put("clients", lobby.clientTurnOrder);
+                    requester.connection.send(response.toString());
+
+                    return;
+                }
+            });
+        }
+        else if (commandString.equals("joinLobbyDeny"))
+        {
+            final Lobby lobby = lobbies.get(client.lobbyId);
+
+            if (client.id != lobby.ownerId)
+            {
+                System.out.println("ERROR: Someone sent a joinLobby accept/deny packet, but it was not the lobby owner!");
+                return;
+            }
+
+            final int requesterId = command.getInt("requesterId");
+
+            // TODO: improve this, there should be a method to get client by their id
+            this.clients.forEach((address, requester) ->
+             {
+                 if (requester.id == requesterId)
+                 {
+                     lobby.addClient(requester);
+                     requester.lobbyId = lobby.id;
+
+                     final JSONObject response = new JSONObject();
+                     response.put("command", "joinLobbyDeny");
+                     response.put("lobbyId", lobby.id);
+                     requester.connection.send(response.toString());
+
+                     return;
+                 }
+             });
         }
         else if (commandString.equals("createLobby"))
         {
@@ -143,12 +200,12 @@ public class StrategyServer extends WebSocketServer
                 return;
             }
 
-            Lobby newLobby = new Lobby(this, lobbyId, client.id);
+            Lobby newLobby = new Lobby(this, lobbyId, client);
             newLobby.addClient(client);
             lobbies.put(lobbyId, newLobby);
 
             final JSONObject response = new JSONObject();
-            response.put("command", "joinedLobby");
+            response.put("command", "joinLobbyAccept");
             response.put("lobbyId", lobbyId);
             response.put("ownerId", client.id);
             response.put("clients", newLobby.clientTurnOrder);
