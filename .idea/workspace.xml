@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="25040cea-a867-43aa-8051-5a6f17737bd2" name="Changes" comment="lobby owners have to accept or reject client join requests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/Lobby.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kerrishaus/StrategyServer/StrategyServer.java" afterDir="false" />
     </list>
@@ -169,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688849166588</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="lobby owners have to accept or reject client join requests">
+      <created>1694296236742</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1694296236742</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

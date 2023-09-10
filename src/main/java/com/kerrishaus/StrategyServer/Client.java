@@ -10,6 +10,10 @@ public class Client
 
     public String lobbyId = null;
 
+    public String color = null;
+    public String name  = null;
+    public String type  = null;
+
     public Client(WebSocket connection, int id)
     {
         this.connection = connection;

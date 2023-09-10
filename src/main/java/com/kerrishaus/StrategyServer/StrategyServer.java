@@ -140,6 +140,10 @@ public class StrategyServer extends WebSocketServer
             {
                 if (requester.id == requesterId)
                 {
+                    requester.name  = command.getString("name");
+                    requester.type  = command.getString("type");
+                    requester.color = command.getString("color");
+
                     lobby.addClient(requester);
                     requester.lobbyId = lobby.id;
 
@@ -147,8 +151,10 @@ public class StrategyServer extends WebSocketServer
                     response.put("command", "joinLobbyAccept");
                     response.put("lobbyId", lobby.id);
                     response.put("ownerId", lobby.ownerId);
-                    response.put("clients", lobby.clientTurnOrder);
+                    response.put("clients", lobby.getClients());
                     requester.connection.send(response.toString());
+
+                    System.out.println("Accepted client with packet: " + response.toString());
 
                     return;
                 }
@@ -200,6 +206,10 @@ public class StrategyServer extends WebSocketServer
                 return;
             }
 
+            client.name  = command.getString("name");
+            client.type  = command.getString("type");
+            client.color = command.getString("color");
+
             Lobby newLobby = new Lobby(this, lobbyId, client);
             newLobby.addClient(client);
             lobbies.put(lobbyId, newLobby);
@@ -208,7 +218,7 @@ public class StrategyServer extends WebSocketServer
             response.put("command", "joinLobbyAccept");
             response.put("lobbyId", lobbyId);
             response.put("ownerId", client.id);
-            response.put("clients", newLobby.clientTurnOrder);
+            response.put("clients", newLobby.getClients());
             conn.send(response.toString());
         }
         else if (commandString.equals("startGame"))

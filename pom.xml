@@ -9,7 +9,7 @@
     <version>23w24a</version>
 
     <build>
-        <finalName>strategyserver</finalName>
+        <finalName>server</finalName>
 
         <plugins>
             <!-- have to keep other plugins in the jar -->

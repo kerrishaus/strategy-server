@@ -14,8 +14,6 @@ public class Lobby
 
     public Map<Integer, Client> clients = new HashMap<>();
 
-    public ArrayList<Integer> clientTurnOrder = new ArrayList<>();
-
     public Lobby(StrategyServer server, String id, Client owner)
     {
         this.server  = server;
@@ -61,18 +59,40 @@ public class Lobby
         this.broadcast(data.toString());
     }
 
+    public ArrayList<JSONObject> getClients()
+    {
+        final ArrayList<JSONObject> object = new ArrayList<JSONObject>();
+
+        this.clients.forEach((clientId, client) ->
+        {
+            final JSONObject client2 = new JSONObject();
+
+            client2.put("id", client.id);
+            client2.put("type", client.type);
+            client2.put("name", client.name);
+            client2.put("color", client.color);
+
+            System.out.println(client2.toString());
+
+            object.add(client2);
+        });
+
+        return object;
+    }
+
     public void addClient(Client client)
     {
         this.clients.put(client.id, client);
         client.lobbyId = this.id;
-
-        this.clientTurnOrder.add(client.id);
 
         System.out.println("Added client " + client.id + " to lobby " + this.id + ".");
 
         final JSONObject command = new JSONObject();
         command.put("command", "clientJoin");
         command.put("clientId", client.id);
+        command.put("type", client.type);
+        command.put("name", client.name);
+        command.put("color", client.color);
 
         this.broadcast(command.toString());
     }
