@@ -151,6 +151,7 @@ public class StrategyServer extends WebSocketServer
                     response.put("command", "joinLobbyAccept");
                     response.put("lobbyId", lobby.id);
                     response.put("ownerId", lobby.ownerId);
+                    response.put("networked", true);
                     response.put("clients", lobby.getClients());
                     requester.connection.send(response.toString());
 
@@ -218,6 +219,7 @@ public class StrategyServer extends WebSocketServer
             response.put("command", "joinLobbyAccept");
             response.put("lobbyId", lobbyId);
             response.put("ownerId", client.id);
+            response.put("networked", true);
             response.put("clients", newLobby.getClients());
             conn.send(response.toString());
         }
